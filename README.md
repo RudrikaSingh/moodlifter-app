@@ -36,6 +36,13 @@ It’s like having a supportive digital companion in your pocket — blending me
 
 ---
 ## Preview
+![Screenshot 2025-07-04 202320](https://github.com/user-attachments/assets/526abedc-7150-4e80-809d-6d4f076eb88d)
+
+![Screenshot 2025-07-04 202305](https://github.com/user-attachments/assets/35a3cd5d-e1c7-4ed0-bbb2-4e8c84a45b36)
+
+![Screenshot 2025-07-04 202551](https://github.com/user-attachments/assets/78c444eb-1496-47d6-8e25-79425b0a49d0)
+
+![image](https://github.com/user-attachments/assets/295d2519-0838-49ea-ab81-7488963ded0b)
 
 ---
 
