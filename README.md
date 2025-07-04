@@ -1,4 +1,4 @@
-# 🌟 MoodLifter – AI Compliment 🌟 + Self-Care Tip + Mood-Based Music 🎧
+# 🌟 MoodLifter – AI Compliment + Self-Care Tip + Mood-Based Music 🎧
 
 Welcome to **MoodLifter**, an uplifting and interactive GenAI-powered Streamlit web application that responds to your emotional state with kindness, creativity, and music. Whether you're feeling tired, anxious, bored, or happy — MoodLifter is here to brighten your day using cutting-edge AI.
 
