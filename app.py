@@ -4,7 +4,7 @@ import requests
 
 # Configure the API key from Streamlit's secrets
 try:
-    genai.configure(api_key=st.secrets["API_KEY"])
+    model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception:
     st.error("API key not found! Please add it to your Streamlit secrets.")
     st.stop()
