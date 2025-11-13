@@ -8,7 +8,7 @@ try:
 except Exception:
     st.error("API key not found! Please add it to your Streamlit secrets.")
     st.stop()
-
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 # Streamlit UI
@@ -33,7 +33,6 @@ if st.button("Lift My Mood"):
             try:
                 response = model.generate_content(prompt)
                 output = response.text.strip()
-
                 # Split compliment and tip
                 compliment = "Could not generate a compliment."
                 tip = "Could not generate a tip."
