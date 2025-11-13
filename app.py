@@ -9,7 +9,7 @@ except Exception:
     st.error("🚨 API key not found! Please add it to your Streamlit secrets.")
     st.stop()
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-pro")
 
 # Streamlit UI
 st.set_page_config(page_title="MoodLifter", page_icon="🌟")
