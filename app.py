@@ -22,21 +22,28 @@ if st.button("Lift My Mood"):
         st.warning("Please select a mood first.")
     else:
         with st.spinner("Generating your vibe..."):
-            prompt = f"""
-            You are a kind, empathetic AI friend. Your task is to provide a thoughtful compliment and a short, actionable self-care tip for someone feeling {mood.lower()}.
-
-            Format your response exactly like this:
-            Compliment: <A warm and sincere compliment related to their strength in feeling this way.>
-            Tip: <A simple, easy-to-do self-care tip.>
-            """
-
             try:
+                # --- 1. GENERATE AI CONTENT ---
+                prompt = f"""
+                You are a kind, empathetic AI friend. Your task is to provide a thoughtful compliment and a short, actionable self-care tip for someone feeling {mood.lower()}.
+
+                Format your response exactly like this:
+                Compliment: <A warm and sincere compliment related to their strength in feeling this way.>
+                Tip: <A simple, easy-to-do self-care tip.>
+                """
+                
                 response = model.generate_content(prompt)
+
+                # --- Check for safety blocks ---
+                if not response.parts:
+                    st.error("The AI's response was blocked, possibly due to safety settings. Please try a different mood.")
+                    st.stop()
+
                 output = response.text.strip()
-                # Split compliment and tip
+                
+                # --- 2. PARSE AI CONTENT ---
                 compliment = "Could not generate a compliment."
                 tip = "Could not generate a tip."
-                
                 lines = output.split('\n')
                 for line in lines:
                     if line.startswith("Compliment:"):
@@ -44,20 +51,27 @@ if st.button("Lift My Mood"):
                     elif line.startswith("Tip:"):
                         tip = line.replace("Tip:", "").strip()
 
-                # iTunes API for music suggestion
+                # --- 3. FETCH SONG FROM ITUNES ---
                 song_markdown = "Song not found."
                 try:
                     search_term = mood.lower()
-                    res = requests.get(f"https://itunes.apple.com/search?term={search_term}&media=music&entity=song&limit=1")
+                    # Added a timeout to prevent hanging
+                    res = requests.get(
+                        f"https://itunes.apple.com/search?term={search_term}&media=music&entity=song&limit=1",
+                        timeout=10 
+                    )
                     res.raise_for_status() # Will raise an error for bad status codes
                     song_data = res.json()
                     if song_data.get("resultCount", 0) > 0:
                         track = song_data["results"][0]
                         song_markdown = f"🎵 **[{track['trackName']} by {track['artistName']}]({track['trackViewUrl']})**"
+                
                 except requests.exceptions.RequestException as e:
-                    song_markdown = f"🎵 Could not fetch a song suggestion: {e}"
+                    # This error is not critical, so just show a warning
+                    st.warning(f"Could not fetch song suggestion: {e}")
+                    song_markdown = "🎵 Could not fetch a song suggestion."
 
-                # Display results
+                # --- 4. DISPLAY RESULTS ---
                 st.subheader("💬 A little something for you...")
                 st.write(compliment)
 
@@ -68,4 +82,7 @@ if st.button("Lift My Mood"):
                 st.markdown(song_markdown, unsafe_allow_html=True)
 
             except Exception as e:
-                st.error(f"❌ An error occurred: {e}")
+                # This will catch any other errors (like from the AI call)
+                # and print the FULL traceback for debugging.
+                st.error(f"❌ An unexpected error occurred: {e}")
+                st.exception(e) # This is the new, important line
